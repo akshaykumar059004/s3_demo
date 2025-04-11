@@ -39,7 +39,7 @@ export default function UploadScreen() {
     }
   };
 
-  const uploadDocument = async (file) => {
+  const uploadDocument = async (file:DocumentPicker.DocumentPickerAsset) => {
     const uploadURL = await axios.get('http://192.168.1.27:5000/api/upload');
     console.log("Upload URL (Frontend):",uploadURL.data);
     //const formData = new FormData();

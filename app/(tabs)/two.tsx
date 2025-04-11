@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import * as Permissions from 'expo-permissions';
-import * as StorageAccessFramework from 'expo-file-system';
+//import * as StorageAccessFramework from 'expo-file-system';
 import * as FileSystem from 'expo-file-system';
 
 
@@ -27,7 +27,7 @@ export default function ViewFilesScreen() {
 
   const pickDirectory = async () => {
     try {
-      const permissions = await StorageAccessFramework.StorageAccessFramework.requestDirectoryPermissionsAsync();
+      const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
       if (!permissions.granted) {
         Alert.alert('Permission Denied', 'You need to allow access to save files.');
         return;
@@ -41,7 +41,8 @@ export default function ViewFilesScreen() {
   };
 
   const downloadFile = async () => {
-    console.log('Selected directory URI:', directoryUri);
+    //console.log('Selected directory URI:', directoryUri);
+    //const dir_uri = directoryUri;
     //alert("Downloading file...");
     let downloadURL;
     const fileName='farmpond4.pdf'
@@ -64,11 +65,11 @@ export default function ViewFilesScreen() {
     );
    try{
     const {uri} = await downloadResumable.downloadAsync();
-    console.log('File downloaded to:', uri);
-    console.log('Temprary file URI:', tempFileUri);
+    //console.log('File downloaded to:', uri);
+    //console.log('Temprary file URI:', tempFileUri);
 
-    const info = await FileSystem.getInfoAsync(uri);
-    console.log('Downloaded file size:', info); 
+    //const info = await FileSystem.getInfoAsync(uri);
+    //console.log('Downloaded file size:', info); 
 
     const base64Content = await FileSystem.readAsStringAsync(uri, {
       encoding: FileSystem.EncodingType.Base64,
@@ -76,7 +77,7 @@ export default function ViewFilesScreen() {
     // const mimeType = 'application/pdf';
    // const newFileUri = await StorageAccessFramework.StorageAccessFramework.createFileAsync(directoryUri, 'farmpond.pdf', mimeType);
 
-    const newFileUri = await StorageAccessFramework.StorageAccessFramework.createFileAsync(
+    const newFileUri = await FileSystem.StorageAccessFramework.createFileAsync(
       directoryUri,
       'document.pdf',
       'application/pdf'
