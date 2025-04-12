@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
-  FlatList,
   TouchableOpacity,
   StyleSheet,
   Alert,
-  ActivityIndicator,
   Button,
 } from 'react-native';
 import axios from 'axios';
-import * as Permissions from 'expo-permissions';
+//import * as Permissions from 'expo-permissions';
 //import * as StorageAccessFramework from 'expo-file-system';
 import * as FileSystem from 'expo-file-system';
 
@@ -21,8 +19,8 @@ interface FileItem {
 }
 
 export default function ViewFilesScreen() {
-  const [files, setFiles] = useState<FileItem[]>([]);
-  const [loading, setLoading] = useState(false);
+ // const [files, setFiles] = useState<FileItem[]>([]);
+  //const [loading, setLoading] = useState(false);
   const [directoryUri, setDirectoryUri] = useState<string>();
 
   const pickDirectory = async () => {
@@ -61,15 +59,18 @@ export default function ViewFilesScreen() {
     const downloadResumable = FileSystem.createDownloadResumable(
       downloadURL.data,
       tempFileUri,
-      {},
     );
+    console.log('Download Resumable:', downloadResumable);
    try{
     const {uri} = await downloadResumable.downloadAsync();
     //console.log('File downloaded to:', uri);
     //console.log('Temprary file URI:', tempFileUri);
 
-    //const info = await FileSystem.getInfoAsync(uri);
-    //console.log('Downloaded file size:', info); 
+    const info = await FileSystem.getInfoAsync(uri);
+    console.log('Downloaded file size:', info); 
+
+    const fileContent = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.UTF8 });
+    console.log("File content preview:", fileContent.slice(0, 500));
 
     const base64Content = await FileSystem.readAsStringAsync(uri, {
       encoding: FileSystem.EncodingType.Base64,

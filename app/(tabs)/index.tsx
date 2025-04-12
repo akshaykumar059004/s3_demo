@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { View, Button, Text, ActivityIndicator, Alert, StyleSheet } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from 'expo-file-system';
-import fs from "expo-file-system";
-import axios, { AxiosError } from "axios";
+//import fs from "expo-file-system";
+import axios from "axios";
 
 import { Buffer } from "buffer";
 
@@ -25,14 +25,15 @@ export default function UploadScreen() {
     if (!result.canceled) {
       setUploading(true);
       try {
-        console.log(result.assets[0].uri);
+        setFileUrl(result.assets[0].uri);
+        //console.log(result.assets[0].uri);
         await uploadDocument(result.assets[0]);
-        console.log("File uploaded successfully");
+        //console.log("File uploaded successfully");
         //console.info("File uploaded successfully");
         alert("File uploaded successfully");
       } catch (error) {
         Alert.alert("Upload failed", "Please try again.");
-        console.log("Upload error:", error);
+        //console.log("Upload error:", error);
       } finally {
         setUploading(false);
       }
@@ -41,7 +42,7 @@ export default function UploadScreen() {
 
   const uploadDocument = async (file:DocumentPicker.DocumentPickerAsset) => {
     const uploadURL = await axios.get('http://192.168.1.27:5000/api/upload');
-    console.log("Upload URL (Frontend):",uploadURL.data);
+    //console.log("Upload URL (Frontend):",uploadURL.data);
     //const formData = new FormData();
     // formData.append("file", {
     //   uri: file.uri,
